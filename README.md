@@ -63,6 +63,6 @@ Contains Tailwind CSS classes for styling the application.
 - @fullcalendar/interaction: FullCalendar plugin for interaction (drag and drop).
 - react-modal: Modal component for React.
 
-Acknowledgements
+### Acknowledgements
 Thanks to the FullCalendar team for their awesome calendar components.
 Special thanks to the team at Guestara for this internship opportunity.
