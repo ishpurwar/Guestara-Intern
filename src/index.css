@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-sans bg-gray-100;
+}
+
+.App {
+  @apply flex flex-col items-center;
+}
+
+.event-form select, .event-form input, .event-form button {
+  @apply mb-2 p-2 border border-gray-300 rounded;
+}
+.fc-license-message{
+  display: none !important;
+}
+/* index.css */
+
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  padding: 14px;
+}
+
+/* Calendar styles */
+.fullcalendar {
+  margin-top: 20px;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+h1 {
+  color: #007aff;
+  cursor: pointer;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+
+/* Modal styles */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+}
+
+.ReactModal__Content {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  margin-right: -50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: #fff !important;
+  border-radius: 18px !important;
+  outline: none !important;
+  padding: 20px !important;
+  width: 400px !important;
+  max-width: 100% !important;
+  
+}
+
+.ReactModal__Content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.ReactModal__Content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.ReactModal__Content input[type="text"],
+.ReactModal__Content input[type="color"],
+.ReactModal__Content input[type="datetime-local"] {
+  margin-bottom: 10px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius:  8px;
+}
+
+.ReactModal__Content button {
+  margin-top: 10px;
+}
+
+/* Custom styles for FullCalendar events */
+.fc-event {
+  border: 2px solid #007aff; /* Adjust the border color */
+  border-radius: 8px; /* Adjust the border-radius */
+  background-color: #ffffff; /* Adjust the background color */
+  color: #000000; /* Adjust the text color */
+  padding: 5px; /* Adjust the padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  cursor: pointer;
+}
+
+.fc-event:hover {
+  background-color: #f0f8ff; /* Adjust the hover background color */
+  color: #000000; /* Adjust the hover text color */
+}
+
+
+.ReactModal__Content button[type="button"] {
+  background-color: #dc3545;
+}
+
+/* Date Picker styles */
+.react-datepicker-wrapper {
+  display: block;
+}
+
+.react-datepicker {
+  border: 1px solid #007aff;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+.react-datepicker__day--selected {
+  background-color: #007aff;
+  color: white;
+}
+
+.react-datepicker__header {
+  background-color: #007aff;
+  border-bottom: none;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: white;
+}
+
+/* Tooltip styles */
+#tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  padding: 5px;
+  z-index: 1000;
+}
+
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
