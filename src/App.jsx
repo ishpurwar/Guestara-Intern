@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -105,6 +105,8 @@ function App() {
     setResources(resources.filter(resource => resource.id !== resourceId));
   };
 
+
+
   const handlePrevMonth = () => {
     let calendarApi = calendarRef.current.getApi();
     calendarApi.prev();
@@ -139,23 +141,23 @@ function App() {
     <div className="App p-14">
       <div className="mb-4 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold cursor-pointer" style={{color:'#007aff'}} onClick={() => setDatePickerOpen(!datePickerOpen)}>
-            {currentMonth}
-          </h1>
-          {datePickerOpen && (
-            <div style={{position:'absolute',zIndex:'4'}}>
-              <DatePicker
-                selected={new Date()}
-                onChange={handleDateChange}
-                inline
-              />
-            </div>
-          )}
+        <h1 className="text-2xl font-bold cursor-pointer" style={{color:'#007aff'}} onClick={() => setDatePickerOpen(!datePickerOpen)}>
+          {currentMonth}
+        </h1>
+        {datePickerOpen && (
+          <div style={{position:'absolute',zIndex:'4'}}>
+          <DatePicker
+          selected={new Date()}
+          onChange={handleDateChange}
+          inline
+          />
+          </div>
+        )}
         </div>
         <div>
-          <button onClick={handlePrevMonth} className="text-xl py-2 bg-white hover:bg-white text-blue-500 rounded hover:text-blue-400">{'<'}</button>
-          <button onClick={handleToday} className="text-xl py-2 bg-white hover:bg-white text-blue-500 rounded hover:text-blue-400">Today</button>
-          <button onClick={handleNextMonth} className="text-xl py-2 bg-white hover:bg-white text-blue-500 rounded hover:text-blue-400">{'>'}</button>
+        <button onClick={handlePrevMonth} className="text-xl py-2 bg-white hover:bg-white  text-blue-500 rounded hover:text-blue-400 rounded ">{'<'}</button>
+        <button onClick={handleToday} className="text-xl py-2 bg-white hover:bg-white  text-blue-500 rounded hover:text-blue-400 ">Today</button>
+        <button onClick={handleNextMonth} className="text-xl py-2 bg-white hover:bg-white  text-blue-500 rounded hover:text-blue-400 rounded">{'>'}</button>
         </div>
       </div>
       <FullCalendar
@@ -164,16 +166,54 @@ function App() {
         initialView="resourceTimelineMonth"
         editable={true}
         droppable={true}
+        selectable={true}
         events={events}
         resources={resources}
-        selectable={true}
-        select={openModal}
-        headerToolbar={{
-          left: '',
-          center: '',
-          right: ''
+        dateClick={openModal}
+        eventDrop={(info) => {
+          const updatedEvents = events.map(event =>
+            event.id === info.event.id
+              ? {
+                  ...event,
+                  start: info.event.start.toISOString(),
+                  end: info.event.end.toISOString(),
+                  resourceId: info.newResource ? info.newResource.id : info.event.resourceId,
+                }
+              : event
+          );
+          setEvents(updatedEvents);
         }}
+        eventResize={(info) => {
+          const updatedEvents = events.map(event =>
+            event.id === info.event.id
+              ? { ...event, start: info.event.start.toISOString(), end: info.event.end.toISOString() }
+              : event
+          );
+          setEvents(updatedEvents);
+        }}
+        headerToolbar={false}
+        slotDuration="24:00:00"
+        slotLabelFormat={{
+          weekday: 'short',
+          month: 'numeric',
+          day: 'numeric',
+          omitZeroMinute: false
+        }}
+        resourceLabelText="Resources"
+        resourceAreaWidth="15%"
+        contentHeight="auto"
+        aspectRatio={2}
+        scrollTime="00:00:00"
+        eventContent={(arg) => (
+          <div>
+            <b>{arg.event.title}</b>
+            <br />
+            {new Date(arg.event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
+            {new Date(arg.event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
+        )}
       />
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -181,45 +221,41 @@ function App() {
         className="modal"
         overlayClassName="modal-overlay"
       >
-        <h2>Add Event</h2>
-        <form onSubmit={(e) => { e.preventDefault(); addEvent(newEvent); }}>
-          <input
-            type="text"
-            name="title"
-            placeholder="Event Title"
-            value={newEvent.title}
-            onChange={handleInputChange}
-          />
-          <input
-            type="color"
-            name="color"
-            value={newEvent.color}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="resourceId"
-            placeholder="Resource ID"
-            value={newEvent.resourceId}
-            onChange={handleInputChange}
-          />
-          <DatePicker
-            selected={new Date(newEvent.startDateTime)}
-            onChange={(date) => setNewEvent({ ...newEvent, startDateTime: date.toISOString() })}
-            showTimeSelect
-            dateFormat="Pp"
-            placeholderText="Start Date"
-          />
-          <DatePicker
-            selected={new Date(newEvent.endDateTime)}
-            onChange={(date) => setNewEvent({ ...newEvent, endDateTime: date.toISOString() })}
-            showTimeSelect
-            dateFormat="Pp"
-            placeholderText="End Date"
-          />
-          <button type="submit">Add Event</button>
+        <h2 className="mb-4">Add Event</h2>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          addEvent(newEvent);
+        }}>
+          <div className="mb-4">
+            <label className="block mb-2">Event Title:</label>
+            <input type="text" name="title" value={newEvent.title} onChange={handleInputChange} required className="border rounded p-2 w-full" />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2">Event Color:</label>
+            <input type="color" name="color" value={newEvent.color} onChange={handleInputChange} required className="border rounded p-2 w-full" />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2">Resource:</label>
+            <select name="resourceId" value={newEvent.resourceId} onChange={handleInputChange} required className="border rounded p-2 w-full">
+              <option value="">Select a Resource</option>
+              {resources.map(resource => (
+                <option key={resource.id} value={resource.id}>{resource.title}</option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2">Start Date & Time:</label>
+            <input type="datetime-local" name="startDateTime" value={newEvent.startDateTime} onChange={handleInputChange} required className="border rounded p-2 w-full" />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2">End Date & Time:</label>
+            <input type="datetime-local" name="endDateTime" value={newEvent.endDateTime} onChange={handleInputChange} required className="border rounded p-2 w-full" />
+          </div>
+          <div className="flex justify-end">
+            <button type="button" onClick={closeModal} className="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded px-4 py-2 mr-2">Cancel</button>
+            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white rounded px-4 py-2">Add Event</button>
+          </div>
         </form>
-        <button onClick={closeModal}>Cancel</button>
       </Modal>
     </div>
   );
